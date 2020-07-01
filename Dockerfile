@@ -1,8 +1,15 @@
-FROM node:12.16.3-alpine as build-step
+#stage 1
+FROM node:12.16.3-alpine as as node
 WORKDIR /app
 COPY . .
 RUN npm install
 RUN npm run build --prod
-FROM nginx:alpine as prod-stage
-COPY --from=build-step /app/dist/angular-app /usr/share/nginx/html
 
+# stage 2
+FROM nginx:alpine
+COPY --from=node /app/dist/angular-app /usr/share/nginx/html
+COPY --from=node app/nginx.conf /etc/nginx/nginx.conf
+
+
+#docker build --tag frontend:1 .
+#docker run --name f1 -d -p 4200:80 frontend:1
