@@ -28,5 +28,4 @@ node {
     			build 'rundeck_job'
     		}
         }
-    }
-}
+  }
