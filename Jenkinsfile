@@ -17,11 +17,16 @@ node {
 	}
 
 	stage('Push image'){
-		docker.withRegistry('https://registry.hub.docker.com','docker-hub'){
+		docker.withRegistry('https://registry.hub.docker.com','dockercredentials'){
 	app.push("${env.BUILD_NUMBER}")
 	app.push("latest")
 }
-echo "Pushing to DockerHub...."
 	}
 
+	stage('Trigger Rundeck'){
+    		steps {
+    			build 'rundeck_job'
+    		}
+        }
+    }
 }
